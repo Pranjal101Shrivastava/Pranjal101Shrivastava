@@ -1,0 +1,151 @@
+\documentclass[letterpaper,10.5pt]{article}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{amssymb}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.55in}
+\addtolength{\evensidemargin}{-0.55in}
+\addtolength{\textwidth}{1.1in}
+\addtolength{\topmargin}{-.75in}
+\addtolength{\textheight}{1.45in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-5pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{\item\small{{#1 \vspace{-2.5pt}}}}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-6pt}
+}
+\newcommand{\resumeEduHeading}[5]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\\
+    \hspace*{0.15in}\small #5
+    \vspace{-5pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.98\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \small #2 \\
+    \end{tabular*}\vspace{-6pt}
+}
+\renewcommand\labelitemii{-}
+\newcommand{\sqbullet}{\raisebox{0.15ex}{\scriptsize$\blacksquare$}}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label=\sqbullet]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.2in, label=\textbf{-}]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge Pranjal Shrivastava} \\ \vspace{2pt}
+    \footnotesize San Jose, CA $|$
+    \href{mailto:pranjal.shrivastava@sjsu.edu}{\underline{pranjal.shrivastava@sjsu.edu}} $|$
+    \href{tel:+14083963030}{\underline{+1 (408) 396-3030}} $|$
+    \href{https://linkedin.com/in/pranjalshrivastava1}{\underline{linkedin.com/in/pranjalshrivastava1}} $|$
+    \href{https://github.com/Pranjal101Shrivastava}{\underline{github.com/Pranjal101Shrivastava}}
+\end{center}
+\vspace{-8pt}
+
+%----------- EDUCATION -----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeEduHeading
+      {San Jose State University}{San Jose, CA}
+      {M.S. Software Engineering, Data Science Specialization $|$ GPA 3.7/4.0}{Aug 2025 - May 2027 (Expected)}
+      {Relevant Coursework: Machine Learning, Deep Learning, Distributed Systems, Cloud Computing, Data Mining}
+    \resumeEduHeading
+      {Lakshmi Narain College of Technology and Science}{India}
+      {B.Tech, Computer Science and Engineering $|$ CGPA 9.2/10}{Aug 2019 - Jul 2023}
+      {Relevant Coursework: Data Structures and Algorithms, Operating Systems, Computer Networks, Database Management Systems}
+  \resumeSubHeadingListEnd
+
+%----------- EXPERIENCE -----------
+\section{Professional Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Work4Flow Inc.}{May 2026 - Sep 2026}
+      {Software Engineer Intern}{San Jose, CA}
+      \resumeItemListStart
+        \resumeItem{Built a \textbf{multi-agent orchestration service} in \textbf{Python} (planner, retriever, writer, and evaluator agents) that decomposes support data into multi-step tasks to generate knowledge articles, cutting turnaround \textbf{98\%} (2 days to 20 min).}
+        \resumeItem{Designed a \textbf{tool-calling layer} with typed JSON-schema \textbf{structured outputs} across \textbf{Claude} and \textbf{GPT-4o}, adding retries, validation, and fallbacks that reduced malformed tool calls from \textbf{11\%} to under \textbf{0.5\%}.}
+        \resumeItem{Implemented \textbf{short- and long-term agent memory} (Redis session state, pgvector store, context summarization) and served the runtime as \textbf{FastAPI microservices}, cutting prompt tokens \textbf{43\%} and raising edit-free acceptance from \textbf{58\% to 91\%}.}
+      \resumeItemListEnd
+    \resumeSubheading
+      {Accenture}{Oct 2023 - Aug 2025}
+      {Associate Software Engineer}{}
+      \resumeItemListStart
+        \resumeItem{Developed \textbf{Java (Spring Boot)} and \textbf{Python} backend microservices and \textbf{REST/gRPC APIs} for an enterprise client platform serving \textbf{3M+ requests/day} at \textbf{99.95\%} availability on Azure Kubernetes Service.}
+        \resumeItem{Engineered a \textbf{generative AI} service that converts plain English compliance rules into Azure Policy definitions via LLM \textbf{structured outputs}, validating every output through automated checks and cutting authoring time \textbf{70\%}.}
+        \resumeItem{Built \textbf{real-time data pipelines} with \textbf{Kafka} and \textbf{PySpark} over \textbf{SQL (PostgreSQL)} and \textbf{NoSQL (Cosmos DB, MongoDB)} stores, redesigning partitioning and indexes to cut processing time \textbf{28\%} and end-to-end latency \textbf{15\%}.}
+        \resumeItem{Optimized a latency-critical \textbf{C++} data-validation module with memory pooling and multithreading, improving throughput \textbf{3.2x} for regulated data migrations that reached \textbf{100\% recovery} with no lost records.}
+        \resumeItem{Implemented \textbf{security and privacy} controls (OAuth2/mTLS, secrets rotation, PII masking) and automated \textbf{CI/CD} in Azure DevOps, cutting pipeline run time \textbf{18\%} and incident MTTR \textbf{35\%}.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%----------- PROJECTS -----------
+\section{Projects}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading
+      {\textbf{EdgeMind - Hybrid Edge-Cloud Agent Orchestration Runtime}}{Python, C++, gRPC, Redis, ONNX Runtime, Docker}
+      \resumeItemListStart
+        \resumeItem{Built an \textbf{agent orchestration runtime} supporting \textbf{tool use}, \textbf{memory management}, and \textbf{multi-step reasoning}, with a planner that routes each step to an \textbf{on-device SLM} or a \textbf{cloud LLM} based on latency, cost, and privacy.}
+        \resumeItem{Kept \textbf{68\%} of requests on-device, cutting cloud inference cost \textbf{54\%} and median response latency from \textbf{1.9s to 620ms} while keeping task success within \textbf{2\%} of a cloud-only baseline on a 500-task benchmark.}
+      \resumeItemListEnd
+    \resumeProjectHeading
+      {\textbf{On-Device Inference Engine for Laptop AI Copilots}}{C++, PyTorch, ONNX Runtime, TensorFlow Lite, CoreML}
+      \resumeItemListStart
+        \resumeItem{Exported \textbf{PyTorch} vision and language models to \textbf{ONNX Runtime}, \textbf{TensorFlow Lite}, and \textbf{CoreML} with \textbf{INT8 quantization}, shrinking model size \textbf{4x} with under \textbf{1.5\%} accuracy loss.}
+        \resumeItem{Wrote a \textbf{C++} inference server with batching and NPU/GPU execution providers, reaching \textbf{38 tokens/s} on a consumer laptop and lowering peak memory \textbf{47\%}, exposed to apps through a local \textbf{gRPC API}.}
+      \resumeItemListEnd
+    \resumeProjectHeading
+      {\textbf{StreamSense - Real-Time Distributed AI Inference Pipeline}}{Java, Kafka, Flink, PostgreSQL, MongoDB, Kubernetes}
+      \resumeItemListStart
+        \resumeItem{Built a \textbf{streaming inference pipeline} in \textbf{Java} that ingests device telemetry through \textbf{Kafka} and \textbf{Flink}, runs model scoring, and persists results to \textbf{PostgreSQL} and \textbf{MongoDB} at \textbf{50K events/s} with \textbf{p99 latency under 120ms}.}
+        \resumeItem{Added \textbf{privacy-preserving} on-device PII redaction and end-to-end encryption, and autoscaled \textbf{Kubernetes} workers on lag, cutting compute cost \textbf{31\%} at peak load.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%----------- SKILLS -----------
+\section{Technical Skills}
+  \resumeSubHeadingListStart
+    \item\small{\textbf{Languages:} Python, Java, C++, Go, SQL, JavaScript}
+    \item\small{\textbf{LLM \& Agents:} Multi-Agent Systems, Agent Orchestration, Tool Use / Function Calling, Memory and Context Management, Task Decomposition, Structured Outputs, Prompt Engineering, RAG, MCP, LangGraph, OpenAI API, Anthropic Claude API}
+    \item\small{\textbf{Backend \& Distributed Systems:} Microservices, REST/gRPC APIs, FastAPI, Spring Boot, Kafka, Flink, Redis, Async Job Queues, Distributed AI Workloads, Cloud-Edge Hybrid Architectures}
+    \item\small{\textbf{AI Deployment \& On-Device:} PyTorch, TensorFlow Lite, ONNX Runtime, CoreML, INT8 Quantization, vLLM, Model Serving, Real-Time Inference Optimization}
+    \item\small{\textbf{Databases:} PostgreSQL, MySQL, MongoDB, Cosmos DB, Redis, pgvector}
+    \item\small{\textbf{Cloud, DevOps \& Security:} Azure, AWS, GCP, Docker, Kubernetes, GitHub Actions, Azure DevOps, OAuth2, mTLS, PII Masking, Agile/Scrum}
+  \resumeSubHeadingListEnd
+
+\end{document}
