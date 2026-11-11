@@ -1,0 +1,449 @@
+From 6142bc6bb7828dbfe29d8fc1fecb02e9f7a4ce1c Mon Sep 17 00:00:00 2001
+From: Pranjal Shrivastava
+ <131521253+Pranjal101Shrivastava@users.noreply.github.com>
+Date: Wed, 11 Nov 2026 06:29:51 +0000
+Subject: [PATCH] [CI] Switch lm-eval GSM8K accuracy tests to gsm8k_platinum
+
+Use the GSM8K Platinum test set (madrylab/gsm8k-platinum) instead of the
+original GSM8K test set in the lm-eval-harness CI configs and baseline
+scripts. Platinum removes ambiguous/poorly-written questions and fixes
+mislabeled answers, so accuracy regressions are not masked by label noise.
+
+Expected metric values in the configs still need to be re-baselined on
+gsm8k_platinum.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01TY3YAS9vsvLhTJjbWJkgXA
+Signed-off-by: Pranjal Shrivastava <131521253+Pranjal101Shrivastava@users.noreply.github.com>
+---
+ .buildkite/lm-eval-harness/configs/DeepSeek-V2-Lite-Chat.yaml   | 2 +-
+ .buildkite/lm-eval-harness/configs/DeepSeek-V4-Flash-MXFP4.yaml | 2 +-
+ .../configs/Meta-Llama-3-70B-Instruct-FBGEMM-nonuniform.yaml    | 2 +-
+ .../lm-eval-harness/configs/Meta-Llama-3-70B-Instruct.yaml      | 2 +-
+ ...Meta-Llama-3-8B-Instruct-Channelwise-compressed-tensors.yaml | 2 +-
+ .../configs/Meta-Llama-3-8B-Instruct-FBGEMM-nonuniform.yaml     | 2 +-
+ .../Meta-Llama-3-8B-Instruct-FP8-compressed-tensors.yaml        | 2 +-
+ .../lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FP8.yaml   | 2 +-
+ .../Meta-Llama-3-8B-Instruct-INT8-compressed-tensors-asym.yaml  | 2 +-
+ .../Meta-Llama-3-8B-Instruct-INT8-compressed-tensors.yaml       | 2 +-
+ .../Meta-Llama-3-8B-Instruct-nonuniform-compressed-tensors.yaml | 2 +-
+ .../lm-eval-harness/configs/Meta-Llama-3-8B-Instruct.yaml       | 2 +-
+ .buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-QQQ.yaml     | 2 +-
+ .../Meta-Llama-3.2-1B-Instruct-FP8-compressed-tensors.yaml      | 2 +-
+ .../Meta-Llama-3.2-1B-Instruct-INT8-compressed-tensors.yaml     | 2 +-
+ .buildkite/lm-eval-harness/configs/Minitron-4B-Base-FP8.yaml    | 2 +-
+ .../configs/Mixtral-8x22B-Instruct-v0.1-FP8-Dynamic.yaml        | 2 +-
+ .../lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1-FP8.yaml | 2 +-
+ .../lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1.yaml     | 2 +-
+ .../configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml            | 2 +-
+ .../configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8-xpu.yaml         | 2 +-
+ .../configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml             | 2 +-
+ .../configs/Qwen1.5-MoE-W4A16-compressed-tensors.yaml           | 2 +-
+ .../lm-eval-harness/configs/Qwen2-1.5B-Instruct-FP8W8.yaml      | 2 +-
+ .../configs/Qwen2-1.5B-Instruct-INT8-compressed-tensors.yaml    | 2 +-
+ .buildkite/lm-eval-harness/configs/Qwen2-57B-A14-Instruct.yaml  | 2 +-
+ .buildkite/lm-eval-harness/configs/Qwen2.5-1.5B-Instruct.yaml   | 2 +-
+ .../configs/Qwen2.5-VL-3B-Instruct-FP8-dynamic.yaml             | 2 +-
+ .../lm-eval-harness/configs/gemma-4-31B-it-FP8-dynamic.yaml     | 2 +-
+ .buildkite/lm-eval-harness/run-lm-eval-gsm-hf-baseline.sh       | 2 +-
+ .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh     | 2 +-
+ 31 files changed, 31 insertions(+), 31 deletions(-)
+
+diff --git a/.buildkite/lm-eval-harness/configs/DeepSeek-V2-Lite-Chat.yaml b/.buildkite/lm-eval-harness/configs/DeepSeek-V2-Lite-Chat.yaml
+index d392a5f..7718ce2 100644
+--- a/.buildkite/lm-eval-harness/configs/DeepSeek-V2-Lite-Chat.yaml
++++ b/.buildkite/lm-eval-harness/configs/DeepSeek-V2-Lite-Chat.yaml
+@@ -2,7 +2,7 @@
+ # bash ./run-lm-eval-gsm-vllm-baseline.sh -m deepseek-ai/DeepSeek-V2-Lite-Chat -b "auto" -l 1000 -f 5 -t 2
+ model_name: "deepseek-ai/DeepSeek-V2-Lite-Chat"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.671
+diff --git a/.buildkite/lm-eval-harness/configs/DeepSeek-V4-Flash-MXFP4.yaml b/.buildkite/lm-eval-harness/configs/DeepSeek-V4-Flash-MXFP4.yaml
+index 2e6a74f..3e2cc74 100644
+--- a/.buildkite/lm-eval-harness/configs/DeepSeek-V4-Flash-MXFP4.yaml
++++ b/.buildkite/lm-eval-harness/configs/DeepSeek-V4-Flash-MXFP4.yaml
+@@ -4,7 +4,7 @@
+ # on gfx950 TP=4 (AITER_MXFP4_BF16 backend); default rtol=0.08.
+ model_name: "amd/DeepSeek-V4-Flash-MXFP4"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.95
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-70B-Instruct-FBGEMM-nonuniform.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-70B-Instruct-FBGEMM-nonuniform.yaml
+index 4b7776b..89dbcc9 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-70B-Instruct-FBGEMM-nonuniform.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-70B-Instruct-FBGEMM-nonuniform.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-hf-baseline.sh -m nm-testing/Meta-Llama-3-70B-Instruct-FBGEMM-nonuniform -b auto -l 1000 -f 5
+ model_name: "nm-testing/Meta-Llama-3-70B-Instruct-FBGEMM-nonuniform"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.905
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-70B-Instruct.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-70B-Instruct.yaml
+index 05b6617..923f660 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-70B-Instruct.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-70B-Instruct.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-hf-baseline.sh -m meta-llama/Meta-Llama-3-70B-Instruct -b 32 -l 250 -f 5
+ model_name: "meta-llama/Meta-Llama-3-70B-Instruct"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.892
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-Channelwise-compressed-tensors.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-Channelwise-compressed-tensors.yaml
+index 12a87e5..0f3650b 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-Channelwise-compressed-tensors.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-Channelwise-compressed-tensors.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m nm-testing/Meta-Llama-3-8B-Instruct-W8A8-FP8-Channelwise-compressed-tensors -b auto -l 1000 -f 5 -t 1
+ model_name: "nm-testing/Meta-Llama-3-8B-Instruct-W8A8-FP8-Channelwise-compressed-tensors"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.752
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FBGEMM-nonuniform.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FBGEMM-nonuniform.yaml
+index 7c7a1ca..299c897 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FBGEMM-nonuniform.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FBGEMM-nonuniform.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m nm-testing/Meta-Llama-3-8B-Instruct-FBGEMM-nonuniform -b auto -l 1000 -f 5 -t 1
+ model_name: "nm-testing/Meta-Llama-3-8B-Instruct-FBGEMM-nonuniform"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.753
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FP8-compressed-tensors.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FP8-compressed-tensors.yaml
+index 1d45c37..96369d4 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FP8-compressed-tensors.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FP8-compressed-tensors.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m nm-testing/Meta-Llama-3-8B-FP8-compressed-tensors-test -b 32 -l 1000 -f 5 -t 1
+ model_name: "nm-testing/Meta-Llama-3-8B-FP8-compressed-tensors-test"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.755
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FP8.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FP8.yaml
+index 29a1452..b5734fd 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FP8.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-FP8.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m neuralmagic/Meta-Llama-3-8B-Instruct-FP8 -b 32 -l 250 -f 5 -t 1
+ model_name: "neuralmagic/Meta-Llama-3-8B-Instruct-FP8"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.753
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-INT8-compressed-tensors-asym.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-INT8-compressed-tensors-asym.yaml
+index 3a5f120..fcb4206 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-INT8-compressed-tensors-asym.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-INT8-compressed-tensors-asym.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m nm-testing/Meta-Llama-3-8B-Instruct-W8-Channel-A8-Dynamic-Asym-Per-Token-Test -b "auto" -l 250 -f 5 -t 1
+ model_name: "nm-testing/Meta-Llama-3-8B-Instruct-W8-Channel-A8-Dynamic-Asym-Per-Token-Test"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.764
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-INT8-compressed-tensors.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-INT8-compressed-tensors.yaml
+index 5ff57ba..a77ee72 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-INT8-compressed-tensors.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-INT8-compressed-tensors.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m nm-testing/Meta-Llama-3-8B-Instruct-W8-Channel-A8-Dynamic-Per-Token-Test -b "auto" -l 250 -f 5 -t 1
+ model_name: "nm-testing/Meta-Llama-3-8B-Instruct-W8-Channel-A8-Dynamic-Per-Token-Test"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.728
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-nonuniform-compressed-tensors.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-nonuniform-compressed-tensors.yaml
+index 07fb130..fe1423f 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-nonuniform-compressed-tensors.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct-nonuniform-compressed-tensors.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m nm-testing/Meta-Llama-3-8B-Instruct-nonuniform-test -b auto -l 1000 -f 5 -t 1
+ model_name: "nm-testing/Meta-Llama-3-8B-Instruct-nonuniform-test"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.758
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct.yaml
+index c278865..34e258c 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-Instruct.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-hf-baseline.sh -m meta-llama/Meta-Llama-3-8B-Instruct -b 32 -l 250 -f 5
+ model_name: "meta-llama/Meta-Llama-3-8B-Instruct"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.756
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-QQQ.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-QQQ.yaml
+index 1ef6925..e6e7df1 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-QQQ.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3-8B-QQQ.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m vllm-project/QQQ-Llama-3-8b-g128 -b 32 -l 1000 -f 5 -t 1
+ model_name: "vllm-project/QQQ-Llama-3-8b-g128"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.419
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3.2-1B-Instruct-FP8-compressed-tensors.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3.2-1B-Instruct-FP8-compressed-tensors.yaml
+index cca5809..f9c5247 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3.2-1B-Instruct-FP8-compressed-tensors.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3.2-1B-Instruct-FP8-compressed-tensors.yaml
+@@ -1,7 +1,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m RedHatAI/Llama-3.2-1B-Instruct-FP8 -b "auto" -l 1319 -f 5 -t 1
+ model_name: "RedHatAI/Llama-3.2-1B-Instruct-FP8"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.335
+diff --git a/.buildkite/lm-eval-harness/configs/Meta-Llama-3.2-1B-Instruct-INT8-compressed-tensors.yaml b/.buildkite/lm-eval-harness/configs/Meta-Llama-3.2-1B-Instruct-INT8-compressed-tensors.yaml
+index 83e11f2..5f6e3b0 100644
+--- a/.buildkite/lm-eval-harness/configs/Meta-Llama-3.2-1B-Instruct-INT8-compressed-tensors.yaml
++++ b/.buildkite/lm-eval-harness/configs/Meta-Llama-3.2-1B-Instruct-INT8-compressed-tensors.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m neuralmagic/Llama-3.2-1B-Instruct-quantized.w8a8 -b "auto" -l 1000 -f 5 -t 1
+ model_name: "neuralmagic/Llama-3.2-1B-Instruct-quantized.w8a8"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.356
+diff --git a/.buildkite/lm-eval-harness/configs/Minitron-4B-Base-FP8.yaml b/.buildkite/lm-eval-harness/configs/Minitron-4B-Base-FP8.yaml
+index 96feb46..bce7660 100644
+--- a/.buildkite/lm-eval-harness/configs/Minitron-4B-Base-FP8.yaml
++++ b/.buildkite/lm-eval-harness/configs/Minitron-4B-Base-FP8.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m vllm-project/Minitron-4B-Base-FP8 -b auto -l 1000 -f 5 -t 1
+ model_name: "vllm-project/Minitron-4B-Base-FP8"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.231
+diff --git a/.buildkite/lm-eval-harness/configs/Mixtral-8x22B-Instruct-v0.1-FP8-Dynamic.yaml b/.buildkite/lm-eval-harness/configs/Mixtral-8x22B-Instruct-v0.1-FP8-Dynamic.yaml
+index 5633a2d..fa7203a 100644
+--- a/.buildkite/lm-eval-harness/configs/Mixtral-8x22B-Instruct-v0.1-FP8-Dynamic.yaml
++++ b/.buildkite/lm-eval-harness/configs/Mixtral-8x22B-Instruct-v0.1-FP8-Dynamic.yaml
+@@ -2,7 +2,7 @@
+ # bash ./run-lm-eval-gsm-vllm-baseline.sh -m neuralmagic/Mixtral-8x22B-Instruct-v0.1-FP8-dynamic -b "auto" -l 250 -f 5 -t 8
+ model_name: "neuralmagic/Mixtral-8x22B-Instruct-v0.1-FP8-dynamic"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.86
+diff --git a/.buildkite/lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1-FP8.yaml b/.buildkite/lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1-FP8.yaml
+index b8024c8..5a470d9 100644
+--- a/.buildkite/lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1-FP8.yaml
++++ b/.buildkite/lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1-FP8.yaml
+@@ -2,7 +2,7 @@
+ # bash ./run-lm-eval-gsm-vllm-baseline.sh -m neuralmagic/Mixtral-8x7B-Instruct-v0.1-FP8 -b "auto" -l 250 -f 5 -t 4
+ model_name: "neuralmagic/Mixtral-8x7B-Instruct-v0.1-FP8"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.624
+diff --git a/.buildkite/lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1.yaml b/.buildkite/lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1.yaml
+index 188a112..8128c74 100644
+--- a/.buildkite/lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1.yaml
++++ b/.buildkite/lm-eval-harness/configs/Mixtral-8x7B-Instruct-v0.1.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-hf-baseline.sh -m neuralmagic/Mixtral-8x7B-Instruct-v0.1 -b 32 -l 250 -f 5
+ model_name: "mistralai/Mixtral-8x7B-Instruct-v0.1"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.616
+diff --git a/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml b/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml
+index c1dbaef..7a97a5c 100644
+--- a/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml
++++ b/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16.yaml
+@@ -1,6 +1,6 @@
+ model_name: "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.695
+diff --git a/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8-xpu.yaml b/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8-xpu.yaml
+index 72ba861..b013a29 100644
+--- a/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8-xpu.yaml
++++ b/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8-xpu.yaml
+@@ -1,6 +1,6 @@
+ model_name: "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.7142
+diff --git a/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml b/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml
+index 164733c..5ef5ec5 100644
+--- a/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml
++++ b/.buildkite/lm-eval-harness/configs/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8.yaml
+@@ -1,6 +1,6 @@
+ model_name: "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.7142
+diff --git a/.buildkite/lm-eval-harness/configs/Qwen1.5-MoE-W4A16-compressed-tensors.yaml b/.buildkite/lm-eval-harness/configs/Qwen1.5-MoE-W4A16-compressed-tensors.yaml
+index 099e0f4..ead9400 100644
+--- a/.buildkite/lm-eval-harness/configs/Qwen1.5-MoE-W4A16-compressed-tensors.yaml
++++ b/.buildkite/lm-eval-harness/configs/Qwen1.5-MoE-W4A16-compressed-tensors.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m nm-testing/Qwen1.5-MoE-A2.7B-Chat-quantized.w4a16 -b auto -l 1319 -f 5 -t 1
+ model_name: "nm-testing/Qwen1.5-MoE-A2.7B-Chat-quantized.w4a16"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.30
+diff --git a/.buildkite/lm-eval-harness/configs/Qwen2-1.5B-Instruct-FP8W8.yaml b/.buildkite/lm-eval-harness/configs/Qwen2-1.5B-Instruct-FP8W8.yaml
+index 426e8ff..28458d1 100644
+--- a/.buildkite/lm-eval-harness/configs/Qwen2-1.5B-Instruct-FP8W8.yaml
++++ b/.buildkite/lm-eval-harness/configs/Qwen2-1.5B-Instruct-FP8W8.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m nm-testing/Qwen2-1.5B-Instruct-FP8W8 -b auto -l 1000 -f 5 -t 1
+ model_name: "nm-testing/Qwen2-1.5B-Instruct-FP8W8"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.578
+diff --git a/.buildkite/lm-eval-harness/configs/Qwen2-1.5B-Instruct-INT8-compressed-tensors.yaml b/.buildkite/lm-eval-harness/configs/Qwen2-1.5B-Instruct-INT8-compressed-tensors.yaml
+index 8d57e9d..a000ae6 100644
+--- a/.buildkite/lm-eval-harness/configs/Qwen2-1.5B-Instruct-INT8-compressed-tensors.yaml
++++ b/.buildkite/lm-eval-harness/configs/Qwen2-1.5B-Instruct-INT8-compressed-tensors.yaml
+@@ -2,7 +2,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m neuralmagic/Qwen2-1.5B-Instruct-quantized.w8a8 -b "auto" -l 1000 -f 5 -t 1
+ model_name: "neuralmagic/Qwen2-1.5B-Instruct-quantized.w8a8"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.593
+diff --git a/.buildkite/lm-eval-harness/configs/Qwen2-57B-A14-Instruct.yaml b/.buildkite/lm-eval-harness/configs/Qwen2-57B-A14-Instruct.yaml
+index fc9707d..99c18ba 100644
+--- a/.buildkite/lm-eval-harness/configs/Qwen2-57B-A14-Instruct.yaml
++++ b/.buildkite/lm-eval-harness/configs/Qwen2-57B-A14-Instruct.yaml
+@@ -2,7 +2,7 @@
+ # bash ./run-lm-eval-gsm-vllm-baseline.sh -m Qwen/Qwen2-57B-A14B-Instruct -b "auto" -l 250 -f 5 -t 4
+ model_name: "Qwen/Qwen2-57B-A14B-Instruct"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.792
+diff --git a/.buildkite/lm-eval-harness/configs/Qwen2.5-1.5B-Instruct.yaml b/.buildkite/lm-eval-harness/configs/Qwen2.5-1.5B-Instruct.yaml
+index 54579a6..c353547 100644
+--- a/.buildkite/lm-eval-harness/configs/Qwen2.5-1.5B-Instruct.yaml
++++ b/.buildkite/lm-eval-harness/configs/Qwen2.5-1.5B-Instruct.yaml
+@@ -1,7 +1,7 @@
+ # bash .buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh -m Qwen/Qwen2.5-1.5B-Instruct -b auto -l 1319 -f 5 -t 1
+ model_name: "Qwen/Qwen2.5-1.5B-Instruct"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.54
+diff --git a/.buildkite/lm-eval-harness/configs/Qwen2.5-VL-3B-Instruct-FP8-dynamic.yaml b/.buildkite/lm-eval-harness/configs/Qwen2.5-VL-3B-Instruct-FP8-dynamic.yaml
+index ff43fa1..c8fb1ed 100644
+--- a/.buildkite/lm-eval-harness/configs/Qwen2.5-VL-3B-Instruct-FP8-dynamic.yaml
++++ b/.buildkite/lm-eval-harness/configs/Qwen2.5-VL-3B-Instruct-FP8-dynamic.yaml
+@@ -5,7 +5,7 @@ required_gpu_arch:
+   - gfx942
+   - gfx950
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.47
+diff --git a/.buildkite/lm-eval-harness/configs/gemma-4-31B-it-FP8-dynamic.yaml b/.buildkite/lm-eval-harness/configs/gemma-4-31B-it-FP8-dynamic.yaml
+index cb6c739..6a2485a 100644
+--- a/.buildkite/lm-eval-harness/configs/gemma-4-31B-it-FP8-dynamic.yaml
++++ b/.buildkite/lm-eval-harness/configs/gemma-4-31B-it-FP8-dynamic.yaml
+@@ -1,6 +1,6 @@
+ model_name: "RedHatAI/gemma-4-31B-it-FP8-dynamic"
+ tasks:
+-- name: "gsm8k"
++- name: "gsm8k_platinum"
+   metrics:
+   - name: "exact_match,strict-match"
+     value: 0.937
+diff --git a/.buildkite/lm-eval-harness/run-lm-eval-gsm-hf-baseline.sh b/.buildkite/lm-eval-harness/run-lm-eval-gsm-hf-baseline.sh
+index e430e61..eb88b15 100755
+--- a/.buildkite/lm-eval-harness/run-lm-eval-gsm-hf-baseline.sh
++++ b/.buildkite/lm-eval-harness/run-lm-eval-gsm-hf-baseline.sh
+@@ -42,5 +42,5 @@ done
+ 
+ lm_eval --model hf \
+   --model_args "pretrained=$MODEL,parallelize=True" \
+-  --tasks gsm8k --num_fewshot "$FEWSHOT" --limit "$LIMIT" \
++  --tasks gsm8k_platinum --num_fewshot "$FEWSHOT" --limit "$LIMIT" \
+   --batch_size "$BATCH_SIZE"
+diff --git a/.buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh b/.buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh
+index f1a541d..aa2fadb 100644
+--- a/.buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh
++++ b/.buildkite/lm-eval-harness/run-lm-eval-gsm-vllm-baseline.sh
+@@ -47,5 +47,5 @@ done
+ 
+ lm_eval --model vllm \
+   --model_args "pretrained=$MODEL,tensor_parallel_size=$TP_SIZE,add_bos_token=true,trust_remote_code=true,max_model_len=4096" \
+-  --tasks gsm8k --num_fewshot "$FEWSHOT" --limit "$LIMIT" \
++  --tasks gsm8k_platinum --num_fewshot "$FEWSHOT" --limit "$LIMIT" \
+   --batch_size "$BATCH_SIZE"
+-- 
+2.43.0
+
